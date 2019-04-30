@@ -36,6 +36,29 @@ router.get('/', function(req, res, next) {
   })
 });
 
+router.post('/getAdminUser', (req, res, next) => {
+  let id = req.cookies.adminId
+  console.log('**********' + id + '**********')
+  Users.findById(id, (err, doc) => {
+    if (err) {
+      console.log('************************error************************')
+      res.json({
+        status: '1',
+        msg: 'err.message'
+      })
+    } else if (doc) {
+      console.log('************************doc************************')
+      res.json({
+        status: '0',
+        msg: 'success',
+        result: doc
+      })
+    } else {
+      console.log('************************not both************************')
+    }
+  })
+})
+
 router.post('/login', (req, res, next) => {
   var param = {
     userName: req.body.userName,
