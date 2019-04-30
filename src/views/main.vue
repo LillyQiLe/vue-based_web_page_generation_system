@@ -5,61 +5,44 @@
     </el-header>
     <el-row>
       <el-col :span=4>
-        <!-- <el-radio-button @click="collapse">展开</el-radio-button> -->
-        <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
-          <el-radio-button :label="false" icon="el-icon-s-unfold">展开</el-radio-button>
-          <el-radio-button :label="true">收起</el-radio-button>
-        </el-radio-group>
-        <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+        <button v-bind:class="{opend: !isCollapse}" class="open iconfont ali-iconbutton" @click="collapse"></button>
+        <el-menu default-active="1-1"
+          class="el-menu-vertical-demo"
+          @open="handleOpen"
+          @close="handleClose"
+          :collapse="isCollapse"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b">
           <el-submenu index="1">
             <template slot="title" >
-              <i class="el-icon-menu"></i>
+              <i class="icon iconfont ali-iconcascades"></i>
               <span slot="title">布局容器</span>
             </template>
-            <el-menu-item index="1-1">Header</el-menu-item>
-            <el-menu-item index="1-2">Footer</el-menu-item>
-            <el-menu-item index="1-3">Aside</el-menu-item>
-            <el-menu-item index="1-4">Main</el-menu-item>
+            <el-menu-item index="1-1" @click="addHeader">Header</el-menu-item>
+            <el-menu-item index="1-2" @click="addFooter">Footer</el-menu-item>
+            <el-menu-item index="1-3" @click="addAside">Aside</el-menu-item>
+            <el-menu-item index="1-4" @click="addMain">Main</el-menu-item>
+          </el-submenu>
+          <el-submenu index="2">
             <template slot="title" >
-              <i class="el-icon-menu"></i>
+              <i class="icon iconfont ali-iconinput"></i>
               <span slot="title">输入框</span>
             </template>
             <el-menu-item index="2-1">简单输入框</el-menu-item>
             <el-menu-item index="2-2">密码输入框</el-menu-item>
             <el-menu-item index="2-3">邮箱输入框</el-menu-item>
-            <el-menu-item index="2-4">邮箱输入框</el-menu-item>
-            <el-menu-item index="2-5">邮箱输入框</el-menu-item>
-            
-            <!-- <el-menu-item-group title="分组2">
-              <el-menu-item index="1-3">选项3</el-menu-item>
-            </el-menu-item-group> -->
-            <!-- <el-submenu index="1-4">
-              <span slot="title">选项4</span>
-              <el-menu-item index="1-4-1">选项1</el-menu-item>
-            </el-submenu> -->
           </el-submenu>
-          <el-menu-item index="2">
-            <i class="el-icon-menu"></i>
-            <span slot="title">导航二</span>
-          </el-menu-item>
-          <el-menu-item index="3" disabled>
-            <i class="el-icon-document"></i>
-            <span slot="title">导航三</span>
-          </el-menu-item>
-          <el-menu-item index="4">
-            <i class="el-icon-setting"></i>
-            <span slot="title">导航四</span>
-          </el-menu-item>
         </el-menu>
       </el-col>
+      <el-col :span="20">
+      </el-col>
     </el-row>
-    <el-main>
-    </el-main>
-    <el-footer></el-footer>
   </el-container>
 </template>
 <script>
 import VHeader from '@/components/VHeader'
+import VFooter from '@/components/VFooter'
 export default {
   data () {
     return {
@@ -67,7 +50,8 @@ export default {
     }
   },
   components: {
-    VHeader
+    VHeader,
+    VFooter
   },
   methods: {
     handleOpen (key, keyPath) {
@@ -78,6 +62,19 @@ export default {
     },
     collapse () {
       this.isCollapse = !this.isCollapse
+    },
+    addHeader () {
+      document.getElementById('here').innerHTML = '<el-header style="background-color: #545c64;height=20px"><v-header style="color:white"></v-header></el-header>'
+    },
+    addFooter () {
+      document.getElementById('elFooter').innerHTML = '<v-footer><v-footer>'
+      alert('hahdsjahsu')
+    },
+    addAside () {
+      alert('hahdsjahsu')
+    },
+    addMain () {
+      alert('hahdsjahsu')
     }
   }
 }
@@ -97,5 +94,26 @@ export default {
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
+}
+.open {
+  padding: 10px 24px;
+  background: #545c64;
+  border: none;
+  outline: none;
+  color: #fff;
+  /* transition: width 0.2s, padding 0.3s, transform 0.3s;
+  -moz-transition: width 0.3s, padding 0.3s, -moz-transform 0.3s;
+  /*-webkit-transition: width 0.3s, padding 0.3s, -webkit-transform 0.3s;
+  /*-o-transition: width 0.3s, padding 0.3s, -o-transform 0.3s; */
+  transition: width 0.45s;
+  -moz-transition: width 0.4s;
+  -webkit-transition: padding 0.37s;
+  -o-transition: width 0.5s;
+}
+.open:active {
+  color: #ffd04b;
+}
+.opend {
+  padding: 10px 92px;
 }
 </style>

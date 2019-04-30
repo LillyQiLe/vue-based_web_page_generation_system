@@ -23,9 +23,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
   if (req.cookies.userId) {
+    if (req.path === '/users') {
+      // console.log('************************userId************************')
+      next()
+    }
+  } else if (req.cookies.adminId) {
+    // console.log('************************adminId************************')
     next()
   } else {
-    if (req.originalUrl == '/users/login' || req.originalUrl == '/users/logout' || req.originalUrl == '/users/checkLogin' || req.originalUrl == '/admins/login') {
+    // console.log('************************else************************')
+    if (req.originalUrl == '/users/login' || req.originalUrl == '/users/logout' || req.originalUrl == '/users/register' || req.originalUrl == '/users/checkLogin' || req.originalUrl == '/admins/login' || req.originalUrl == '/admins/checkLogin') {
+      // console.log('************************else if************************')      
       next()
     } else {
       res.json({

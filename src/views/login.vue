@@ -54,7 +54,7 @@ export default {
       }).then(res => {
         if (res.data.status === '1') {
           this.$message.error({
-            message: '登录失败，用户名或密码有误'
+            message: '用户名或密码有误'
           })
           return
         }

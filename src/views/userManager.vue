@@ -53,8 +53,15 @@ export default {
           currentPage: val
         }
       }).then((res) => {
-        this.users = res.data.result.list
-        this.total = res.data.result.count
+        if (res.data.status === '0') {
+          this.users = res.data.result.list
+          this.total = res.data.result.count
+        } else if (res.status === '10001') {
+          this.$message({
+            message: res.data.msg,
+            type: 'warning'
+          })
+        }
       }).catch(error => {
         console.log(error)
       })

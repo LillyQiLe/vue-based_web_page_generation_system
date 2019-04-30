@@ -43,35 +43,42 @@ router.post('/login', (req, res, next) => {
   }
   Users.findOne(param, (err, doc) => {
     if (err) {
+    // console.log('************************error************************')
       res.json({
         status: '1',
         msg: err.message
       })
-    } else {
-      if (doc) {
-        if (doc.status == 1) {
-          res.json({
-            status: '1',
-            msg: '该管理员不再具有权限'
-          })
-          return
+    } else if (doc) {
+      // console.log('************************doc************************')
+      // if (doc.status == 1) {
+      //   res.json({
+      //     status: '1',
+      //     msg: '该管理员不再具有权限'
+      //   })
+      //   return
+      // }
+      res.cookie('adminId', doc._id, {
+        path: '/',
+        maxAge: 1000*60*60
+      })
+      res.cookie('adminName', doc.userName, {
+        path: '/',
+        maxAge: 1000*60*60
+      })
+      res.json({
+        status: '0',
+        msg: '',
+        result: {
+          userName: doc.userName
         }
-        res.cookie('adminId', doc._id, {
-          path: '/',
-          maxAge: 1000*60*60
-        })
-        res.cookie('adminName', doc.userName, {
-          path: '/',
-          maxAge: 1000*60*60
-        })
-        res.json({
-          status: '0',
-          msg: '',
-          result: {
-            userName: doc.userName
-          }
-        })
-      }
+      })
+    } else if (!doc) {
+      // console.log('************************not both************************')
+      res.json({
+        status: '1',
+        msg: '用户不存在',
+        result: ''
+      })
     }
   })
 })

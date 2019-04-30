@@ -20,7 +20,7 @@
          <el-row>
            <el-col :span="4" :offset="4">
              <div class="grid-content">
-               <h1 class="logo">VM</h1>
+               <h1 class="logo">WPM</h1>
              </div>
            </el-col>
            <el-col :span="8" :offset="2">
