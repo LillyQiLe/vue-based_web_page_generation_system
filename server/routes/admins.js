@@ -59,8 +59,45 @@ router.post('/getAdminUser', (req, res, next) => {
   })
 })
 
+router.post('/powerClose', (req, res, next) => {
+  let _id = req.body._id
+  Users.findOneAndUpdate(_id, {status: 1}, (err, doc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err,
+        result: ''
+      })
+    } else {
+      res.json({
+        status: '0',
+        msg: '关闭权限操作成功',
+        result: doc
+      })
+    }
+  })
+})
+router.post('/powerOpen', (req, res, next) => {
+  let _id = req.body._id
+  Users.findOneAndUpdate(_id, {status: 0}, (err, doc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err,
+        result: ''
+      })
+    } else {
+      res.json({
+        status: '0',
+        msg: '打开权限操作成功',
+        result: doc
+      })
+    }
+  })
+})
+
 router.post('/login', (req, res, next) => {
-  var param = {
+  let param = {
     userName: req.body.userName,
     pwd: req.body.pwd
   }

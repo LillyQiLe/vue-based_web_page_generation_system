@@ -70,6 +70,8 @@ export default {
   },
   mounted () {
   },
+  computed: {
+  },
   methods: {
     test () {
       axios.get('/users').then(response => {
