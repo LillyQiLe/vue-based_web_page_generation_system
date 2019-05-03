@@ -15,7 +15,7 @@ mongoose.connection.on('disconnected', () => {
   console.log('MongoDB connected disconnected.')
 })
 
-/* GET users listing. */
+
 router.get('/', function(req, res, next) {
   let currentPage = req.param("currentPage")
   let pageSize = 6
@@ -42,5 +42,36 @@ router.get('/', function(req, res, next) {
     }
   })
 });
+
+router.post('/getAppInfo', (req, res, next) => {
+  let _id = req.body._id
+  console.log('**********' + _id + '**********')
+  if (!_id) {
+    res.json({
+      status: '0',
+      msg: '不存在',
+      result: '不存在'
+    })
+  } else {
+    Apps.findById(_id, (err, doc) => {
+      if (err) {
+        // console.log('************************error************************')
+        res.json({
+          status: '1',
+          msg: err
+        })
+      } else if (doc) {
+        // console.log('************************doc************************')
+        res.json({
+          status: '0',
+          msg: 'success',
+          result: doc
+        })
+      } else {
+        console.log('************************not both************************')
+      }
+    })
+  }
+})
 
 module.exports = router;

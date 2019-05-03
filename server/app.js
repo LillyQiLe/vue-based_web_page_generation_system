@@ -21,29 +21,30 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use((req, res, next) => {
-  if (req.cookies.userId) {
-    if (req.path === '/users') {
-      // console.log('************************userId************************')
-      next()
-    }
-  } else if (req.cookies.adminId) {
-    // console.log('************************adminId************************')
-    next()
-  } else {
-    // console.log('************************else************************')
-    if (req.originalUrl == '/users/login' || req.originalUrl == '/users/logout' || req.originalUrl == '/users/register' || req.originalUrl == '/users/checkLogin' || req.originalUrl == '/admins/login' || req.originalUrl == '/admins/checkLogin') {
-      // console.log('************************else if************************')      
-      next()
-    } else {
-      res.json({
-        status: '10001',
-        msg: '当前还木有登录呢！',
-        result: ''
-      })
-    }
-  }
-})
+// app.use((req, res, next) => {
+//   if (req.cookies.userId) {
+//     // if (req.path === '/users') {
+//     // console.log('************************userId************************')
+//       next()
+//     // }
+//   } else if (req.cookies.adminId) {
+//     // console.log('************************adminId************************')
+//     next()
+//   } else {
+//     console.log('************************else************************')
+//     console.log('req.originalUrl' + req.originalUrl)
+//     if (req.originalUrl == '/users/login*' || req.originalUrl == '/users/logout' || req.originalUrl == '/users/register' || req.originalUrl == '/users/checkLogin' || req.originalUrl == '/admins/login' || req.originalUrl == '/admins/checkLogin') {
+//       // console.log('************************else if************************')      
+//       next()
+//     } else {
+//       res.json({
+//         status: '10001',
+//         msg: '当前还木有登录呢！',
+//         result: ''
+//       })
+//     }
+//   }
+// })
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

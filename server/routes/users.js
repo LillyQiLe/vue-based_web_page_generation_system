@@ -84,6 +84,7 @@ router.post('/register', (req, res, next) => {
 })
 
 router.post('/login', (req, res, next) => {
+  console.log('***************login*****************')
   var param = {
     userName: req.body.userName,
     pwd: req.body.pwd
@@ -110,6 +111,13 @@ router.post('/login', (req, res, next) => {
           result: {
             userName: doc.userName
           }
+        })
+      } else if (!doc) {
+        console.log('***************not both***************')
+        res.json({
+          status: '1',
+          msg: 'failed resquest',
+          result: ''
         })
       }
     }
@@ -146,6 +154,112 @@ router.get('/checkLogin', (req, res, next) => {
       result: ''
     })
   }
+})
+
+//获取某人的网页列表
+router.post('/getWebPageList', (req, res, next) => {
+  let _id = req.cookies.userId
+  Users.findById(_id, (err, doc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: '查询失败',
+        result: err
+      })
+    } else if (doc) {
+      res.json({
+        status: '0',
+        msg: '查询成功',
+        result: doc.appList
+      })
+    }
+  })
+})
+
+//获取某人的网页列表（分页）
+router.post('/getPageList', (req, res, next) => {
+  let _id = req.cookies.userId
+  // let _id = '5caeeb0f67d25c309c3e11eb'
+  let currentPage = req.body.currentPage
+  let pageSize = 6
+  let skip = (currentPage-1)*pageSize
+  let appCount
+
+  Users.findById(_id, (err, doc) => {
+    if (err) {
+      console.log('*************count error**************')
+    } else if (doc) {
+      appCount = doc.appList.length
+      console.log("doc.appList.length" + doc.appList.length)
+    } else {
+      console.log('count failed')
+    }
+  })
+  // console.log('******appCount:' + appCount + '******')
+  Users.findById(_id, 'appList').skip(skip).limit(pageSize).exec((err, doc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: '查询失败',
+        result: err
+      })
+    } else if (doc) {
+      res.json({
+        status: '0',
+        msg: '查询成功',
+        result: {
+          appList: doc.appList,
+          appCount: appCount
+        }
+      })
+    } else {
+      console.log('find failed')
+      res.json({
+        status: '1',
+        msg: 'find failed',
+        result: ''
+      })
+    }
+  })
+})
+
+//获取某人的用户名
+router.post('/getUserName', (req, res, next) => {
+  let _id = req.body._id
+  Users.findById(_id, (err, doc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: '查询用户名失败',
+        result: err
+      })
+    } else if (doc) {
+      res.json({
+        status: '0',
+        msg: '查询用户名成功',
+        result: doc.userName
+      })
+    }
+  })
+})
+
+router.get('/getUserInfo', (req, res, next) => {
+  let _id = req.cookies.userId
+  Users.findById(_id, (err, doc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: '查询用户失败',
+        result: err
+      })
+    } else if (doc) {
+      res.json({
+        status: '0',
+        msg: '查询用户名成功',
+        result: doc
+      })
+    }
+  })
 })
 
 module.exports = router;

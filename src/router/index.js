@@ -10,6 +10,7 @@ import AppManager from '@/views/appManager'
 import PersonalCenter from '@/views/personalCenter'
 import Input from '@/pieces/input'
 import Main from '@/views/main'
+import HomePage from '@/views/homePage'
 
 Vue.use(Router)
 
@@ -56,6 +57,11 @@ export default new Router({
       path: '/workspace',
       name: 'Main',
       component: Main
+    },
+    {
+      path: '/homePage',
+      name: 'HomePage',
+      component: HomePage
     },
     {
       path: '/test',

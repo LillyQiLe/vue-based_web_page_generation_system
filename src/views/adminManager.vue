@@ -2,10 +2,11 @@
   <div>
     <el-container>
       <el-main>
-        <h1>管理员</h1>
         <el-row :gutter="10">
           <el-col :xs="0" :sm="2" :md="4" :lg="5" :xl="8"><div class="grid-content"></div></el-col>
           <el-col :xs="24" :sm="20" :md="16" :lg="14" :xl="8">
+            <h3>管理员</h3>
+            <el-divider></el-divider>
             <div class="grid-content bg-purple-light">
               <el-table :data="users" stripe style="width: 100%">
                 <el-table-column prop="userName" label="用户名" width="180"></el-table-column>
@@ -24,13 +25,16 @@
         </el-row>
       </el-main>
 
-      <el-footer></el-footer>
+      <el-footer>
+        <!-- <v-footer></v-footer> -->
+      </el-footer>
     </el-container>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import VFooter from '@/components/VFooter'
 export default {
   data () {
     return {
@@ -39,6 +43,9 @@ export default {
       status: 0,
       level: ''
     }
+  },
+  components: {
+    VFooter
   },
   mounted () {
     axios.get('/admins').then((res) => {

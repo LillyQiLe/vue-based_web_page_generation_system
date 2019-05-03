@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button class="loginBtn" type="text" v-text="callbackUserName" v-show="ifLogin"></el-button>
+    <el-button class="loginBtn" type="text" v-text="callbackUserName" v-show="ifLogin" @click="goToHomePage"></el-button>
     <el-button class="loginBtn" type="text" v-show="ifLogin" @click="logout">登出</el-button>
     <el-button class="loginBtn" type="text" @click="logindialogVisible = true" v-show="!ifLogin">登录</el-button>
     <el-button class="loginBtn" type="text" @click="registerdialogVisible = true" v-show="!ifLogin">注册</el-button>
@@ -144,8 +144,12 @@ export default {
             type: 'success'
           })
           this.ifLogin = false
+          this.$router.push('/')
         }
       })
+    },
+    goToHomePage () {
+      this.$router.push('/homePage')
     }
   }
 }
