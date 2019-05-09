@@ -19,29 +19,109 @@
               <i class="icon iconfont ali-iconcascades"></i>
               <span slot="title">布局容器</span>
             </template>
-            <el-menu-item index="1-1" @click="addHeader">Header</el-menu-item>
-            <el-menu-item index="1-2" @click="addFooter">Footer</el-menu-item>
-            <el-menu-item index="1-3" @click="addAside">Aside</el-menu-item>
-            <el-menu-item index="1-4" @click="addMain">Main</el-menu-item>
+            <el-menu-item index="1-1">
+              Header
+              <el-tooltip class="item right" effect="dark" content="添加" placement="right">
+                <el-button type="text" icon="el-icon-circle-plus-outline" @click="addHeader"></el-button>
+              </el-tooltip>
+            </el-menu-item>
+            <el-menu-item index="1-2">
+              Footer
+              <el-tooltip class="item right" effect="dark" content="添加" placement="right">
+                <el-button type="text" icon="el-icon-circle-plus-outline" @click="addFooter"></el-button>
+              </el-tooltip>
+            </el-menu-item>
+            <el-menu-item index="1-3">
+              Aside
+              <el-tooltip class="item right" effect="dark" content="添加" placement="right">
+                <el-button type="text" icon="el-icon-circle-plus-outline" @click="test"></el-button>
+              </el-tooltip>
+            </el-menu-item>
+            <el-menu-item index="1-4">
+              Main
+              <el-tooltip class="item right" effect="dark" content="添加" placement="right">
+                <el-button type="text" icon="el-icon-circle-plus-outline" @click="test"></el-button>
+              </el-tooltip>
+            </el-menu-item>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title" >
               <i class="icon iconfont ali-iconinput"></i>
               <span slot="title">输入框</span>
             </template>
-            <el-menu-item index="2-1">简单输入框</el-menu-item>
-            <el-menu-item index="2-2">密码输入框</el-menu-item>
-            <el-menu-item index="2-3">邮箱输入框</el-menu-item>
+            <el-menu-item index="2-1">
+              简单输入框
+              <el-tooltip class="item right" effect="dark" content="添加" placement="right">
+                <el-button type="text" icon="el-icon-circle-plus-outline" @click="test"></el-button>
+              </el-tooltip>
+            </el-menu-item>
+            <el-menu-item index="2-2">
+              密码输入框
+              <el-tooltip class="item right" effect="dark" content="添加" placement="right">
+                <el-button type="text" icon="el-icon-circle-plus-outline" @click="test"></el-button>
+              </el-tooltip>
+            </el-menu-item>
+            <el-menu-item index="2-3">
+              邮箱输入框
+              <el-tooltip class="item right" effect="dark" content="添加" placement="right">
+                <el-button type="text" icon="el-icon-circle-plus-outline" @click="test"></el-button>
+              </el-tooltip>
+            </el-menu-item>
+          </el-submenu>
+          <el-submenu index="3">
+            <template slot="title" >
+              <i class="icon iconfont ali-iconcascades"></i>
+              <span slot="title">按钮</span>
+            </template>
+            <el-menu-item index="3-1">
+              <el-button type="primary" size="mini">click</el-button>
+              <el-tooltip class="item right" effect="dark" content="添加" placement="right">
+                <el-button type="text" icon="el-icon-circle-plus-outline" @click="test"></el-button>
+              </el-tooltip>
+            </el-menu-item>
+            <el-menu-item index="3-2">
+              <el-button type="primary" size="mini" plain>click</el-button>
+              <el-tooltip class="item right" effect="dark" content="添加" placement="right">
+                <el-button type="text" icon="el-icon-circle-plus-outline" @click="test"></el-button>
+              </el-tooltip>
+            </el-menu-item>
+            <el-menu-item index="3-3">
+              <el-button type="primary" size="mini" plain circle>click</el-button>
+              <el-tooltip class="item right" effect="dark" content="添加" placement="right">
+                <el-button type="text" icon="el-icon-circle-plus-outline" @click="test"></el-button>
+              </el-tooltip>
+            </el-menu-item>
+            <el-menu-item index="3-3">
+              <el-button type="text" size="mini" plain circle>click</el-button>
+              <el-tooltip class="item right" effect="dark" content="添加" placement="right">
+                <el-button type="text" icon="el-icon-circle-plus-outline" @click="test"></el-button>
+              </el-tooltip>
+            </el-menu-item>
+            <el-menu-item index="3-4">
+              <el-button size="mini">click</el-button>
+              <el-tooltip class="item right" effect="dark" content="添加" placement="right">
+                <el-button type="text" icon="el-icon-circle-plus-outline" @click="test"></el-button>
+              </el-tooltip>
+            </el-menu-item>
           </el-submenu>
         </el-menu>
       </el-col>
       <el-col :span="20">
+        <el-row>
+          
+        </el-row>
+      </el-col>
+    </el-row>
+    <el-row type="flex" justify="end">
+      <el-col :span="1">
+        <el-button type="info" icon="el-icon-folder" circle @click="savePage()"></el-button>
       </el-col>
     </el-row>
   </el-container>
 </template>
 <script>
-import VHeader from '@/components/VHeader'
+import Vue from 'vue'
+import VHeader from '@/pieces/WPHeader'
 import VFooter from '@/components/VFooter'
 export default {
   data () {
@@ -52,6 +132,8 @@ export default {
   components: {
     VHeader,
     VFooter
+  },
+  computed: {
   },
   methods: {
     handleOpen (key, keyPath) {
@@ -64,17 +146,25 @@ export default {
       this.isCollapse = !this.isCollapse
     },
     addHeader () {
-      document.getElementById('here').innerHTML = '<el-header style="background-color: #545c64;height=20px"><v-header style="color:white"></v-header></el-header>'
+      var Profile = Vue.extend(VHeader)
+      new Profile().$mount('#mount-point')
+      // document.getElementById('here').innerHTML = '<el-header style="background-color: #545c64;height=20px"><v-header style="color:white"></v-header></el-header>'
     },
     addFooter () {
-      document.getElementById('elFooter').innerHTML = '<v-footer><v-footer>'
-      alert('hahdsjahsu')
+      var Profile = Vue.extend(VFooter)
+      new Profile().$mount('#mount-point')
     },
     addAside () {
       alert('hahdsjahsu')
     },
     addMain () {
       alert('hahdsjahsu')
+    },
+    savePage () {
+
+    },
+    test () {
+      alert('afsfgafuhaegdsg')
     }
   }
 }
@@ -115,5 +205,9 @@ export default {
 }
 .opend {
   padding: 10px 92px;
+}
+.right {
+  float: right;
+  margin: 5px 0 0 10px;
 }
 </style>

@@ -50,6 +50,8 @@ router.get('/', function(req, res, next) {
 // })
 
 router.post('/register', (req, res, next) => {
+  console.log(req.body.userName)
+  console.log(req.body)
   var param = {
     userName: req.body.userName,
     pwd: req.body.pwd,
@@ -84,7 +86,6 @@ router.post('/register', (req, res, next) => {
 })
 
 router.post('/login', (req, res, next) => {
-  console.log('***************login*****************')
   var param = {
     userName: req.body.userName,
     pwd: req.body.pwd
@@ -179,7 +180,6 @@ router.post('/getWebPageList', (req, res, next) => {
 //获取某人的网页列表（分页）
 router.post('/getPageList', (req, res, next) => {
   let _id = req.cookies.userId
-  // let _id = '5caeeb0f67d25c309c3e11eb'
   let currentPage = req.body.currentPage
   let pageSize = 6
   let skip = (currentPage-1)*pageSize
@@ -195,20 +195,23 @@ router.post('/getPageList', (req, res, next) => {
       console.log('count failed')
     }
   })
-  // console.log('******appCount:' + appCount + '******')
-  Users.findById(_id, 'appList').skip(skip).limit(pageSize).exec((err, doc) => {
+  Users.findById(_id).exec((err, doc) => {
     if (err) {
       res.json({
         status: '1',
-        msg: '查询失败',
-        result: err
+        msg: err.msg,
+        result: '查询失败'
       })
     } else if (doc) {
+      let list = []
+      for (let i=skip;i<skip+pageSize;i++) {
+        list.push(doc.appList[i])
+      }
       res.json({
         status: '0',
         msg: '查询成功',
         result: {
-          appList: doc.appList,
+          appList: list,
           appCount: appCount
         }
       })
@@ -257,6 +260,73 @@ router.get('/getUserInfo', (req, res, next) => {
         status: '0',
         msg: '查询用户名成功',
         result: doc
+      })
+    }
+  })
+})
+
+// 向某人的appList中添加
+router.post('/addapp', (req, res, next) => {
+  let param = {
+    userId: req.body.userId,
+    appId: req.body.appId
+  }
+  console.log('*******param********' + param)
+
+  Users.findById(param.userId, (err, doc) => {
+    if (err) {
+      console.log('*******users findById ERROR********')
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      })
+    } else if (doc) {
+      console.log('*******users findById doc push appList********' + doc.appList)
+      doc.appList.push(param.appId)
+      doc.save()
+      console.log('*******users findById doc pushed********' + doc.appList)
+      res.json({
+        status: '0',
+        msg: 'users->appList添加成功',
+        result: ''
+      })
+    }
+  })
+})
+
+// 删除appList中的某项
+router.post('/deleteapp', (req, res, next) => {
+  let param = {
+    userId: req.body.userId,
+    appId: req.body.appId
+  }
+  Users.findById(param.userId, (err, doc) => {
+    if (err) {
+      console.log('*******users findById ERROR********')
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      })
+    } else if (doc) {
+      // TODO
+      console.log('*******appList**********')
+      console.log(doc.appList)
+      doc.appList.forEach((element,index) => {
+        if (element === param.appId) {
+          doc.appList.splice(index,1)
+        }
+      });
+      console.log('*******appList Later**********')
+      console.log(doc.appList)
+      // doc.appList.pop(param.appId)
+      doc.save()
+      console.log('*******users findById doc poped********' + doc.appList)
+      res.json({
+        status: '0',
+        msg: 'users->appList删除成功',
+        result: ''
       })
     }
   })

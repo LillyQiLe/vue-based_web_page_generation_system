@@ -88,7 +88,7 @@ export default {
       axios.get('/users/checkLogin').then(res => {
         let response = res.data
         if (response.status === '0') {
-          this.$router.push('/workspace')
+          this.$router.push('/homePage')
         } else {
           this.$message.error({
             message: response.msg

@@ -8,7 +8,7 @@ import AdminManager from '@/views/adminManager'
 import UserManager from '@/views/userManager'
 import AppManager from '@/views/appManager'
 import PersonalCenter from '@/views/personalCenter'
-import Input from '@/pieces/input'
+import Test from '@/views/test'
 import Main from '@/views/main'
 import HomePage from '@/views/homePage'
 
@@ -65,8 +65,8 @@ export default new Router({
     },
     {
       path: '/test',
-      name: 'Input',
-      component: Input
+      name: 'Test',
+      component: Test
     }
   ]
 })

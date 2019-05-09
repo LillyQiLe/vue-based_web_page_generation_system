@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bgColor">
     <el-button class="loginBtn" type="text" v-text="callbackUserName" v-show="ifLogin" @click="goToHomePage"></el-button>
     <el-button class="loginBtn" type="text" v-show="ifLogin" @click="logout">登出</el-button>
     <el-button class="loginBtn" type="text" @click="logindialogVisible = true" v-show="!ifLogin">登录</el-button>

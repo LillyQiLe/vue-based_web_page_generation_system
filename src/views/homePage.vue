@@ -19,11 +19,12 @@
         </el-col>
         <el-col :xs="20" :sm="16" :md="14" :lg="14" :xl="12">
           <div class="grid-content wpm-border2">
-            <el-button type="primary" icon="el-icon-plus" circle plain></el-button>
+            <el-button type="primary" icon="el-icon-plus" circle plain @click="addAppVisible = true"></el-button>
             <el-divider></el-divider>
             <el-table :data="appList" stripe>
               <el-table-column prop="appName" label="网页"></el-table-column>
-              <el-table-column label="操作" fixed="right">
+              <el-table-column prop="registertime" label="时间"></el-table-column>
+              <el-table-column width="300" label="操作" fixed="right">
                 <template slot-scope="scope">
                   <el-button type="primary" plain round @click="webPageInfo(scope.row)" size="small">浏览</el-button>
                   <el-button type="primary" plain round @click="editWebPage(scope.row)" size="small">编辑</el-button>
@@ -44,6 +45,17 @@
           </div>
         </el-col>
       </el-row>
+      <el-dialog title="添加网页" :visible.sync="addAppVisible">
+        <el-form :model="addAppForm">
+          <el-form-item label="网页名称">
+            <el-input v-model="addAppForm.appName" auto-complete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="addAppVisible = false">取 消</el-button>
+          <el-button type="primary" @click="addApp()">确 定</el-button>
+        </div>
+      </el-dialog>
     </div>
 </template>
 
@@ -60,7 +72,13 @@ export default {
       appList: [],
       total: 10,
       currentPage: 1,
-      pageSize: 6
+      pageSize: 6,
+      userId: '',
+      addAppVisible: false,
+      addAppForm: {
+        userId: '',
+        appName: ''
+      }
     }
   },
   components: {
@@ -76,6 +94,7 @@ export default {
         })
       } else if (response.status === '0') {
         this.userName = response.result.userName
+        this.userId = response.result._id
         if (!response.result.status) {
           this.status = '活跃'
         } else {
@@ -106,6 +125,7 @@ export default {
         console.error('error init.' + error)
       })
       await aa
+      this.appList = []
       this.apps.forEach(appid => {
         axios.post('/apps/getAppInfo', {
           _id: appid
@@ -124,14 +144,113 @@ export default {
     },
     handleCurrentChange (val) {
       this.currentPage = val
-      this.getApps(val)
+      this.getAppList()
       // console.log(`当前页：${val}`)
     },
     webPageInfo (val) {
       console.log(val)
     },
     editWebPage (val) {
-
+      axios.post('/apps/editApp', {
+        _id: val._id
+      }).then(res => {
+        let response = res.data
+        if (response.status === '1') {
+          this.$message.error({
+            message: response.msg
+          })
+        } else if (response.status === '0') {
+          this.$router.push('/workspace')
+        }
+      })
+    },
+    deleteWebPage (val) {
+      this.$confirm('此操作将删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        axios.post('/apps/deleteApp', {
+          _id: val._id
+        }).then(res => {
+          let response = res.data
+          if (response.status === '1') {
+            this.$message.error({
+              message: response.msg
+            })
+          } else if (response.status === '0') {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          }
+        })
+        axios.post('/users/deleteapp', {
+          userId: this.userId,
+          appId: val._id
+        }).then(res => {
+          let response = res.data
+          if (response.status === '1') {
+            this.$message.error({
+              message: response.msg
+            })
+          } else if (response.status === '0') {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            this.getAppList()
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    async addApp () {
+      this.addAppForm.userId = this.userId
+      let param = {
+        userId: this.userId,
+        appId: ''
+      }
+      let flag = 0
+      let aa = axios.post('/apps/addApp', this.addAppForm).then(res => {
+        let response = res.data
+        if (response.status === '1') {
+          this.$message.error({
+            message: response.msg
+          })
+        } else if (response.status === '0') {
+          // this.$message({
+          //   message: response.msg,
+          //   type: 'success'
+          // })
+          flag++
+          // console.log('response.result' + response.result)
+          // console.log('response.result._id' + response.result._id)
+          param.appId = response.result._id
+        }
+      })
+      await aa
+      axios.post('/users/addapp', param).then(res => {
+        let response = res.data
+        if (response.status === '1') {
+          this.$message.error({
+            message: response.msg
+          })
+        } else if (response.status === '0') {
+          if (flag === 1) {
+            this.$message({
+              message: '注册成功',
+              type: 'success'
+            })
+          }
+          this.getAppList()
+        }
+      })
+      this.addAppVisible = false
     }
   }
 }
