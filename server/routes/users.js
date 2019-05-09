@@ -134,6 +134,10 @@ router.post('/logout', (req, res, next) => {
     path: '/',
     maxAge: 0
   })
+  res.cookie('appId', '', {
+    path: '/',
+    maxAge: 0
+  })
   res.json({
     status: '0',
     msg: '登出成功',
@@ -204,7 +208,7 @@ router.post('/getPageList', (req, res, next) => {
       })
     } else if (doc) {
       let list = []
-      for (let i=skip;i<skip+pageSize;i++) {
+      for (let i=skip;i<skip+pageSize&&i<appCount;i++) {
         list.push(doc.appList[i])
       }
       res.json({
@@ -228,7 +232,7 @@ router.post('/getPageList', (req, res, next) => {
 
 //获取某人的用户名
 router.post('/getUserName', (req, res, next) => {
-  let _id = req.body._id
+  let _id = req.cookies.userId
   Users.findById(_id, (err, doc) => {
     if (err) {
       res.json({

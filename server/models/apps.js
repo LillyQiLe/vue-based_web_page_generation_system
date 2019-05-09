@@ -1,26 +1,30 @@
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema
-var componentSchema = {
+
+var cols = {
+  row: Number,
+  span: Number,
+  offset: Number,
+  id: String
+}
+var components = {
   name: String,
-  span: {
-    type: Number,
-    default: 0
-  },
-  offset: {
-    type: Number,
-    default: 0
-  },
-  start: Number,
-  text: String,
-  class: String
+  position: String
 }
 var appSchema = new Schema({
   userId: String,
   appName: String,
   registertime: {type: Date, default: Date.now},
   lastlogintime: {type: Date, default: Date.now},
-  components: componentSchema,
-  status: {type: Number, default: 1, min: 0, max: 3}
+  status: {type: Number, default: 1, min: 0, max: 3},
+  componentsList: {
+    type: [components],
+    default: []
+  },
+  colsList: {
+    type: [cols],
+    default: []
+  }
 })
 
 // appSchema.createIndexs({registertime: 1})

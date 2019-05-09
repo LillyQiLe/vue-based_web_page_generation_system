@@ -5,7 +5,7 @@ var userSchema = new Schema({
     'userId': String,
     'userName': String,
     'pwd': String,
-    'appList': Array,
+    'appList': [String],
     'status': String
 })
 

@@ -160,5 +160,9 @@ export default {
   line-height: 30px;
   margin: 10px;
   float: right;
+  color: antiquewhite;
+}
+.el-button span {
+  color: rgb(122, 131, 70);
 }
 </style>

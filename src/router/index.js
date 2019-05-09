@@ -11,6 +11,7 @@ import PersonalCenter from '@/views/personalCenter'
 import Test from '@/views/test'
 import Main from '@/views/main'
 import HomePage from '@/views/homePage'
+import WebPage from '@/views/WebPage'
 
 Vue.use(Router)
 
@@ -62,6 +63,11 @@ export default new Router({
       path: '/homePage',
       name: 'HomePage',
       component: HomePage
+    },
+    {
+      path: '/webpage',
+      name: 'WebPage',
+      component: WebPage
     },
     {
       path: '/test',

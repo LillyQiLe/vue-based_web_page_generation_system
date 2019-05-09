@@ -44,11 +44,17 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/getAppInfo', (req, res, next) => {
-  let _id = req.body._id
+  let _id
+  if (req.body._id) {
+    _id = req.body._id
+  } else {
+    _id = req.cookies.appId
+  }
+  
   console.log('**********' + _id + '**********')
   if (!_id) {
     res.json({
-      status: '0',
+      status: '1',
       msg: '不存在',
       result: '不存在'
     })
@@ -58,7 +64,8 @@ router.post('/getAppInfo', (req, res, next) => {
         // console.log('************************error************************')
         res.json({
           status: '1',
-          msg: err
+          msg: err.message,
+          result: ''
         })
       } else if (doc) {
         // console.log('************************doc************************')
@@ -69,6 +76,11 @@ router.post('/getAppInfo', (req, res, next) => {
         })
       } else {
         console.log('************************not both************************')
+        res.json({
+          status: '1',
+          msg: 'not both',
+          result: '不存在'
+        })
       }
     })
   }
@@ -156,6 +168,38 @@ router.post('/editApp', (req, res, next) => {
           result: ''
         })
       }
+    }
+  })
+})
+
+// 向app中添加colsList和componentsList
+router.post('/updateList', (req, res, next) => {
+  let colsList = req.body.colsList
+  let componentsList = req.body.componentsList
+  let appId = req.cookies.appId
+  // console.log('********debugger**********')
+  // console.log('colsList: '+colsList)
+  // console.log(colsList)
+
+  Apps.findById(appId, (err, doc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      })
+    } else if (doc) {
+      
+      // console.log('doc.componentsList'+doc.componentsList)
+      doc.componentsList = doc.componentsList.concat(componentsList)
+      // console.log('doc.componentsList'+doc.componentsList)
+      doc.colsList = doc.colsList.concat(colsList)
+      doc.save()
+      res.json({
+        status: '0',
+        msg: '保存成功',
+        result: ''
+      })
     }
   })
 })
