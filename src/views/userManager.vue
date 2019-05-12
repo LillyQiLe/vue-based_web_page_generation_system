@@ -98,7 +98,7 @@ export default {
       // console.log(`当前页：${val}`)
     },
     async checkWebPage (val) {
-      let aa = axios.post('/users/getWebPageList', {
+      let aa = axios.post('/users/getWebPageListBE', {
         _id: val._id
       }).then(res => {
         if (res.data.status === '1') {

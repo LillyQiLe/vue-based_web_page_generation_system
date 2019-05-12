@@ -1,9 +1,17 @@
 <template>
-  <div class="bgColor">
-    <el-button class="loginBtn" type="text" v-text="callbackUserName" v-show="ifLogin" @click="goToHomePage"></el-button>
-    <el-button class="loginBtn" type="text" v-show="ifLogin" @click="logout">登出</el-button>
-    <el-button class="loginBtn" type="text" @click="logindialogVisible = true" v-show="!ifLogin">登录</el-button>
-    <el-button class="loginBtn" type="text" @click="registerdialogVisible = true" v-show="!ifLogin">注册</el-button>
+  <div>
+    <div class="header">
+      <div>
+        <i class="el-icon-reading"></i>
+      </div>
+      <div>
+        <i class="el-icon-user-solid"></i>
+        <el-button type="text" v-text="callbackUserName" v-show="ifLogin" @click="goToHomePage"></el-button>
+        <el-button type="text" v-show="ifLogin" @click="logout">登出</el-button>
+        <el-button type="text" @click="logindialogVisible = true" v-show="!ifLogin">登录</el-button>
+        <el-button type="text" @click="registerdialogVisible = true" v-show="!ifLogin">注册</el-button>
+      </div>
+    </div>
     <el-dialog
       title="登录"
       :visible.sync="logindialogVisible"
@@ -59,7 +67,7 @@ export default {
       let res = response.data
       if (res.status === '0') {
         this.callbackUserName = res.result
-        this.ifLogin = true
+        this.userName = res.result
       }
     })
   },
@@ -84,27 +92,28 @@ export default {
         })
         return
       }
-      axios.post('/users/register', {
-        userName: this.userName,
-        pwd: this.pwd
-      }).then(res => {
-        if (res.data.status === '1') {
-          this.$message.error({
-            message: res.data.msg
-          })
-          return
-        }
-        if (res.data.status === '0') {
-          this.$message({
-            message: '注册成功',
-            type: 'success'
-          })
-          this.registerdialogVisible = false
-          // this.login()
-        }
-      }).catch(error => {
-        console.error('error init.' + error)
-      })
+      // axios.post('/users/register', {
+      //   userName: this.userName,
+      //   pwd: this.pwd
+      // }).then(res => {
+      //   if (res.data.status === '1') {
+      //     this.$message.error({
+      //       message: res.data.msg
+      //     })
+      //     return
+      //   }
+      //   if (res.data.status === '0') {
+      //     this.$message({
+      //       message: '注册成功',
+      //       type: 'success'
+      //     })
+      //     this.registerdialogVisible = false
+      //     // this.login()
+      //   }
+      // }).catch(error => {
+      //   console.error('error init.' + error)
+      // })
+      this.registerdialogVisible = false
     },
     login () {
       if (!this.userName || !this.pwd) {
@@ -113,52 +122,73 @@ export default {
         })
         return
       }
-      axios.post('/users/login', {
-        userName: this.userName,
-        pwd: this.pwd
-      }).then(res => {
-        if (res.data.status === '1') {
-          this.$message.error({
-            message: '登录失败，用户名或密码有误'
-          })
-          return
-        }
-        if (res.data.status === '0') {
-          this.$message({
-            message: '登录成功',
-            type: 'success'
-          })
-          this.callbackUserName = res.data.result.userName
-          this.ifLogin = true
-        }
-      }).catch(error => {
-        console.error('error init.' + error)
-      })
+      // axios.post('/users/login', {
+      //   userName: this.userName,
+      //   pwd: this.pwd
+      // }).then(res => {
+      //   if (res.data.status === '1') {
+      //     this.$message.error({
+      //       message: '登录失败，用户名或密码有误'
+      //     })
+      //     return
+      //   }
+      //   if (res.data.status === '0') {
+      //     this.$message({
+      //       message: '登录成功',
+      //       type: 'success'
+      //     })
+      //     this.callbackUserName = res.data.result.userName
+      //     this.ifLogin = true
+      //   }
+      // }).catch(error => {
+      //   console.error('error init.' + error)
+      // })
+      this.ifLogin = true
       this.logindialogVisible = false
     },
     logout () {
-      axios.post('/users/logout').then(res => {
-        if (res.data.status === '0') {
-          this.$message({
-            message: '登出成功',
-            type: 'success'
-          })
-          this.ifLogin = false
-          this.$router.push('/')
-        }
-      })
+      this.ifLogin = false
+      // axios.post('/users/logout').then(res => {
+      //   if (res.data.status === '0') {
+      //     this.$message({
+      //       message: '登出成功',
+      //       type: 'success'
+      //     })
+      //     this.ifLogin = false
+      //     this.$router.push('/')
+      //   }
+      // })
     },
     goToHomePage () {
-      this.$router.push('/homePage')
+      // this.$router.push('/homePage')
     }
   }
 }
 </script>
 
 <style>
-.loginBtn {
-  line-height: 30px;
-  margin: 10px;
-  float: right;
+* {
+  padding: 0px;
+  margin: 0px;
+}
+.header {
+  background-color: #24292e;
+  color: hsla(0,0%,100%,.7);
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 16px;
+  z-index: 32;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header div:first-child i:first-child {
+  font-size: 1.7em;
+}
+.header i {
+  font-size: 1.3em;
+}
+.header div .el-button {
+  color: hsla(0,0%,100%,.7);
 }
 </style>

@@ -12,6 +12,7 @@
             <div class="leftInfo">
               <i class="el-icon-user-solid"></i>
               {{ userName }}
+              <br>
               <i class="el-icon-s-opportunity"></i>
               {{ status }}
             </div>
@@ -157,7 +158,7 @@ export default {
             message: response.msg
           })
         } else if (response.status === '0') {
-          this.$router.push('/workspace')
+          this.$router.push('/webpage')
         }
       })
     },

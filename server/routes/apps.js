@@ -182,6 +182,7 @@ router.post('/updateList', (req, res, next) => {
   // console.log(colsList)
 
   Apps.findById(appId, (err, doc) => {
+    console.log('*******************************start****************')
     if (err) {
       res.json({
         status: '1',
@@ -189,15 +190,21 @@ router.post('/updateList', (req, res, next) => {
         result: ''
       })
     } else if (doc) {
-      
-      // console.log('doc.componentsList'+doc.componentsList)
-      doc.componentsList = doc.componentsList.concat(componentsList)
-      // console.log('doc.componentsList'+doc.componentsList)
-      doc.colsList = doc.colsList.concat(colsList)
+      console.log('doc.componentsList'+doc.componentsList)
+      doc.componentsList = componentsList
+      console.log('doc.componentsList'+doc.componentsList)
+      doc.colsList = colsList
       doc.save()
       res.json({
         status: '0',
         msg: '保存成功',
+        result: ''
+      })
+    } else {
+      console.log('****************************not both*********************')
+      res.json({
+        status: '1',
+        msg: 'not both',
         result: ''
       })
     }

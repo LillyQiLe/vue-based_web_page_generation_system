@@ -21,15 +21,19 @@
 import axios from 'axios'
 import Vue from 'vue'
 import VHeader from '@/pieces/WPHeader'
+import VFooter from '@/pieces/WPFooter'
 export default {
   data () {
     return {
       userName: 'Jack',
+      text: '',
+      isCollapse: true,
       dateValue: new Date(),
       addColDialogVisible: false,
       addHeaderDialogVisible: false,
       addFooterDialogVisible: false,
       addCalenderDialogVisible: false,
+      addButtonDialogVisible: false,
       colForm: {
         row: '',
         span: '',
@@ -37,11 +41,29 @@ export default {
       },
       cols: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       commonUseForm: {
-        position: ''
+        position: '',
+        text: '',
+        model: '',
+        size: '',
+        type: '',
+        placeholder: '',
+        reserve1: '',
+        reserve2: '',
+        reserve3: '',
+        reserve4: '',
+        reserve5: '',
+        reserve6: '',
+        reserve7: ''
       },
       colsList: [],
-      componentsList: []
+      componentsList: [],
+      i: 0,
+      value: []
     }
+  },
+  components: {
+    VHeader,
+    VFooter
   },
   mounted () {
     this.getPageInfo()
@@ -75,7 +97,7 @@ export default {
         // console.log(col)
         let row = 'r' + col.row
         let Col = Vue.extend({
-          template: '<el-col :span="' + col.span + '" :offset="' + col.offset + '"><div class="grid-content bg-purple" id="' + col.id + '"></div></el-col></div>'
+          template: '<el-col :span="' + col.span + '" :offset="' + col.offset + '"><div id="' + col.id + '"></div></el-col></div>'
         })
         let newCol = new Col().$mount()
         document.getElementById(row).appendChild(newCol.$el)
@@ -86,18 +108,34 @@ export default {
           let newHeader = new Header().$mount()
           document.getElementById(element.position).appendChild(newHeader.$el)
         } else if (element.name === 'addFooter') {
-          let Footer = Vue.extend({
-            template: '<div><i class="el-icon-location"></i>' + this.userName + '</div>'
-          })
-          let newFooter = new Footer().$mount()
+          let Footer = Vue.extend(VFooter)
+          let newFooter = new Footer({
+            propsData: {
+              userName: this.userName
+            }
+          }).$mount()
           document.getElementById(element.position).appendChild(newFooter.$el)
         } else if (element.name === 'addCalender') {
           let Calender = Vue.extend({
-            template: '<el-calendar v-model="dateValue"></el-calendar>',
+            template: '<el-calendar class="my-border" v-model="dateValue"></el-calendar>',
             props: ['dateValue']
           })
           let newCalender = new Calender().$mount()
           document.getElementById(element.position).appendChild(newCalender.$el)
+        } else if (element.name === 'addButton') {
+          let Button = Vue.extend({
+            template: '<el-button type="' + element.type + '" size="' + element.size + '">click</el-button>',
+            props: ['text']
+          })
+          let newBtn = new Button().$mount()
+          document.getElementById(element.position).appendChild(newBtn.$el)
+        } else if (element.name === 'addInput') {
+          let Input = Vue.extend({
+            template: '<el-input type="' + element.type + '" placeholder="' + element.placeholder + '" v-model="' + this.value[this.i] + '"></el-input>'
+          })
+          let newInput = new Input().$mount()
+          document.getElementById(element.position).appendChild(newInput.$el)
+          this.i++
         }
       })
     }

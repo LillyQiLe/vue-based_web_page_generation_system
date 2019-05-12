@@ -9,7 +9,19 @@ var cols = {
 }
 var components = {
   name: String,
-  position: String
+  position: String,
+  text: {type: String, default: undefined},
+  model: {type: String, default: undefined},
+  size: {type: String, default: undefined},
+  type: {type: String, default: undefined},
+  placeholder: {type: String, default: undefined},
+  reserve1: {type: String, default: undefined},
+  reserve2: {type: String, default: undefined},
+  reserve3: {type: String, default: undefined},
+  reserve4: {type: String, default: undefined},
+  reserve5: {type: String, default: undefined},
+  reserve6: {type: String, default: undefined},
+  reserve7: {type: String, default: undefined}
 }
 var appSchema = new Schema({
   userId: String,

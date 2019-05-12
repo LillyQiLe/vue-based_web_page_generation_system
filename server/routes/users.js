@@ -181,6 +181,26 @@ router.post('/getWebPageList', (req, res, next) => {
   })
 })
 
+//获取某人的网页列表(后台)
+router.post('/getWebPageListBE', (req, res, next) => {
+  let _id = req.body._id
+  Users.findById(_id, (err, doc) => {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: '查询失败',
+        result: err
+      })
+    } else if (doc) {
+      res.json({
+        status: '0',
+        msg: '查询成功',
+        result: doc.appList
+      })
+    }
+  })
+})
+
 //获取某人的网页列表（分页）
 router.post('/getPageList', (req, res, next) => {
   let _id = req.cookies.userId

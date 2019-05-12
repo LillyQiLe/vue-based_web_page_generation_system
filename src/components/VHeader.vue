@@ -162,7 +162,7 @@ export default {
   float: right;
   color: antiquewhite;
 }
-.el-button span {
+.loginBtn span {
   color: rgb(122, 131, 70);
 }
 </style>

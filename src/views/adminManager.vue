@@ -48,45 +48,48 @@ export default {
     VFooter
   },
   mounted () {
-    axios.get('/admins').then((res) => {
-      this.users = res.data.result.list
-      this.users.forEach((user) => {
-        if (!user.status) {
-          user.status = '正常'
-        } else if (user.status) {
-          user.status = '无权限'
-        }
-        if (user.level === '2') {
-          user.level = '普通管理员'
-        } else if (user.level === '1') {
-          user.level = '高级管理员'
-        }
-      })
-    }).catch(error => {
-      console.log(error)
-    })
-
-    let start = document.cookie.indexOf('=') + 1
-    let end = document.cookie.indexOf(';')
-    let id = document.cookie.slice(start, end)
-    axios.post('/admins/getAdminUser', {
-      adminId: id
-    }).then(res => {
-      let response = res.data
-      if (response.status === '1') {
-        this.$message.error({
-          message: response.msg
-        })
-      } else if (response.status === '0') {
-        this.userName = response.result.userName
-        this.status = response.result.status
-        this.level = response.result.level
-      }
-    }).catch(error => {
-      console.error('error init.' + error)
-    })
+    this.getStart()
   },
   methods: {
+    getStart () {
+      axios.get('/admins').then((res) => {
+        this.users = res.data.result.list
+        this.users.forEach((user) => {
+          if (!user.status) {
+            user.status = '正常'
+          } else if (user.status) {
+            user.status = '无权限'
+          }
+          if (user.level === '2') {
+            user.level = '普通管理员'
+          } else if (user.level === '1') {
+            user.level = '高级管理员'
+          }
+        })
+      }).catch(error => {
+        console.log(error)
+      })
+
+      let start = document.cookie.indexOf('=') + 1
+      let end = document.cookie.indexOf(';')
+      let id = document.cookie.slice(start, end)
+      axios.post('/admins/getAdminUser', {
+        adminId: id
+      }).then(res => {
+        let response = res.data
+        if (response.status === '1') {
+          this.$message.error({
+            message: response.msg
+          })
+        } else if (response.status === '0') {
+          this.userName = response.result.userName
+          this.status = response.result.status
+          this.level = response.result.level
+        }
+      }).catch(error => {
+        console.error('error init.' + error)
+      })
+    },
     powerClose (scope) {
       if (!this.status && this.level === '1') {
         let id = scope._id
@@ -102,6 +105,7 @@ export default {
               message: res.data.msg,
               type: 'success'
             })
+            this.getStart()
           }
         }).catch(error => {
           console.error('error init.' + error)
@@ -127,6 +131,7 @@ export default {
               message: res.data.msg,
               type: 'success'
             })
+            this.getStart()
           }
         }).catch(error => {
           console.error('error init.' + error)

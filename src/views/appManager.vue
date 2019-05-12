@@ -105,7 +105,18 @@ export default {
       // console.log(`当前页：${val}`)
     },
     webPageInfo (val) {
-      console.log(val)
+      axios.post('/apps/editApp', {
+        _id: val._id
+      }).then(res => {
+        let response = res.data
+        if (response.status === '1') {
+          this.$message.error({
+            message: response.msg
+          })
+        } else if (response.status === '0') {
+          this.$router.push('/webpage')
+        }
+      })
     }
   }
 }
