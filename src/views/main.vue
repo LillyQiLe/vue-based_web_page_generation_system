@@ -80,6 +80,7 @@
               </el-tooltip>
             </el-menu-item>
           </el-submenu>
+          <el-menu-item @click="help()">HELP</el-menu-item>
         </el-menu>
       </el-col>
       <el-col :span="20">
@@ -107,6 +108,7 @@
         <el-form-item label="row" label-width="120px">
           <el-input v-model="colForm.row" auto-complete="off" placeholder="位列第几行（从1开始到10）"></el-input>
         </el-form-item>
+        <!-- TODO: 添加radio -->
         <el-form-item label="span" label-width="120px">
           <el-input v-model="colForm.span" auto-complete="off" placeholder="请输入列宽（1-24）"></el-input>
         </el-form-item>
@@ -506,6 +508,11 @@ export default {
           document.getElementById(element.position).appendChild(newInput.$el)
           this.i++
         }
+      })
+    },
+    help () {
+      this.$confirm('使用说明敬请期待....', 'Help', {
+        confirmButtonText: '确定'
       })
     }
   }
